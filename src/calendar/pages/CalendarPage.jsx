@@ -7,6 +7,7 @@ import { addHours } from 'date-fns'
 import { Navbar , CalendarEventBox , CalendarModal} from "../"
 
 import { localizer, getMessagesES } from '../../helpers';
+import { useUiStore } from '../../hooks';
 
 
 const events = [{
@@ -23,7 +24,10 @@ const events = [{
 
 export const CalendarPage = () => {
 
-    //Si no se sietiene el valor se dejara en la semana 
+
+    const {openDateModal} = useUiStore();
+
+    //Si no se tiene el valor se dejara en la semana 
     const [lasView, setLasView] = useState(localStorage.getItem('lastView') || 'week');
     
     const eventStyleGetter = (event, start, end, isSelected) => {
@@ -43,7 +47,7 @@ export const CalendarPage = () => {
     
     //Para activar modal
     const onDoubleClick = (event) => {
-        console.log({onDoubleClick: event});
+        openDateModal()
     }
 
     //Respecto a lo seleccionado se abstrae la info de este

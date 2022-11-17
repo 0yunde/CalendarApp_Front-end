@@ -5,7 +5,7 @@ import { CalendarPage } from "../calendar";
 /*
 * Proteccion de rutas.
 * Fail Safe route : en caso de que se requiera solicitar cualquier otra ruta no existente llevar a pantalla de login 
-*@param {Routes} Manejo de las rutas de la aplicacion, en caso de estar autenticado o no estarlo
+* {Routes} Manejo de las rutas de la aplicacion, en caso de estar autenticado o no estarlo
 */
 export const AppRouter = () => {
 

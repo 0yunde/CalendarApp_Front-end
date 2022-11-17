@@ -8,7 +8,10 @@ import 'sweetalert2/dist/sweetalert2.min.css'
 
 import Modal from 'react-modal';
 import DatePicker, { registerLocale } from "react-datepicker";
+
 import es from 'date-fns/locale/es';
+import { useUiStore } from '../../hooks';
+
 
 
 registerLocale('es', es)
@@ -29,10 +32,9 @@ const customStyles = {
 Modal.setAppElement('#root');
 
 export const CalendarModal = () => {
- 
-  // Accion del modal
-  const [ isOpen, setIsOpen ] = useState(true);
-  //Manejo de formulario tradicional
+    
+  // Accion del modal para abrirlo al accionar en calendar
+   const { isDateModalOpen, closeDateModal } = useUiStore();
 
   //Titulo manejo de validacion del formulario
   const [ formSubmitted, setFormSubmitted ] = useState(false);
@@ -40,7 +42,7 @@ export const CalendarModal = () => {
 
   const [formValues, setFormValues] = useState({
     title: 'Alejandro',
-    notes: 'Creación de formulario',
+    notes: 'Esta es una descripción de ejemplo',
     start: new Date(),
     end: addHours(new Date(),2),
   });
@@ -70,8 +72,7 @@ export const CalendarModal = () => {
   }
 
   const onCloseModal = () => {
-    console.log('Cerrando modal');
-    setIsOpen(false);
+    closeDateModal();
   }  
 
   const onSubmit = (event) => {
@@ -99,7 +100,7 @@ export const CalendarModal = () => {
 
   return (
     <Modal
-        isOpen={isOpen}
+        isOpen={isDateModalOpen}
         onRequestClose={onCloseModal}
         style={customStyles}
         className="modal"
