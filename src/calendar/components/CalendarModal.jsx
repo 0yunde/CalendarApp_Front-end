@@ -1,7 +1,10 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { addHours, differenceInSeconds } from 'date-fns';
 
 import "react-datepicker/dist/react-datepicker.css";
+import Swal from 'sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css'
+
 
 import Modal from 'react-modal';
 import DatePicker, { registerLocale } from "react-datepicker";
@@ -28,14 +31,27 @@ Modal.setAppElement('#root');
 export const CalendarModal = () => {
  
   // Accion del modal
-  const [isOpen, setIsOpen] = useState(true);
+  const [ isOpen, setIsOpen ] = useState(true);
   //Manejo de formulario tradicional
+
+  //Titulo manejo de validacion del formulario
+  const [ formSubmitted, setFormSubmitted ] = useState(false);
+
+
   const [formValues, setFormValues] = useState({
     title: 'Alejandro',
     notes: 'Creación de formulario',
     start: new Date(),
     end: addHours(new Date(),2),
   });
+
+  const titleClass = useMemo(() => {
+    //Si el formulario no se dispara regresa un string vacio en la titulo 
+    if (!formSubmitted) return '' ;
+
+    return (formValues.title.length > 0) ? 'is-valid' : 'is-invalid' ;
+
+  }, [formValues.title, formSubmitted])
 
   //Permite realizar los cambios en el formulario
   const onInputChanged = ({ target }) => {
@@ -60,14 +76,17 @@ export const CalendarModal = () => {
 
   const onSubmit = (event) => {
     event.preventDefault();
+    //formulario intento posteo de formulario
+    setFormSubmitted(true)
     
     const difference = differenceInSeconds(formValues.end, formValues.start);
     if(isNaN(difference) || difference <= 0 ){
-        console.log('Error en fechas');
+
+        Swal.fire('Fechas incorrectas' , 'Revisar fechas ingresadas', 'error' )
         return;
     }
     if(formValues.title.length <= 0) {
-        console.log('Debe ingresar una titulo o evento');
+        Swal.fire('Debe ingresar un titulo del evento', '', 'error' )
         return;
     };
 
@@ -120,24 +139,24 @@ export const CalendarModal = () => {
 
 
             <div className="form-group mb-2">
-                <label>Titulo y notas</label>
+                <label>Titulo del evento</label>
                 <input 
                     type="text" 
-                    className="form-control"
-                    placeholder="Título del evento"
+                    className={`form-control ${titleClass}`}
+                    placeholder="Título"
                     name="title"
                     autoComplete="off"
                     value= {formValues.title}
                     onChange={onInputChanged}
                 />
-                <small id="emailHelp" className="form-text text-muted">Una descripción corta</small>
             </div>
 
             <div className="form-group mb-3">
+                <label>Descripción del evento</label>
                 <textarea 
                     type="text" 
                     className="form-control"
-                    placeholder="Notas"
+                    placeholder="Descripción"
                     rows="5"
                     name="notes"
                     value={formValues.notes}
