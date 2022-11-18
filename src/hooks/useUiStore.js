@@ -9,7 +9,7 @@ export const useUiStore = () => {
     const {isDateModalOpen
     } = useSelector(state => state.ui);
 
-    //funcion que permite abrir modal
+    //Funcion que permite abrir modal
     const openDateModal = () => {
         dispatch(onOpenDateModal())
     }

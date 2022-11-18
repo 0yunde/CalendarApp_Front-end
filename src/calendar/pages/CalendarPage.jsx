@@ -3,29 +3,20 @@ import { useState } from 'react';
 import { Calendar } from 'react-big-calendar'
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
-import { addHours } from 'date-fns'
-import { Navbar , CalendarEventBox , CalendarModal} from "../"
+import { Navbar , CalendarEventBox , CalendarModal, FabAddNew ,FabDelete} from "../"
 
 import { localizer, getMessagesES } from '../../helpers';
-import { useUiStore } from '../../hooks';
+import { useUiStore, useCalendarStore } from '../../hooks';
 
-
-const events = [{
-    title:'Cumple del jano',
-    notes: 'Hay que comprar copete',
-    start: new Date(),
-    end: addHours(new Date(), 2 ),
-    bgColor: '#fafafa',
-    user: {
-        _id: '123',
-        name: 'Victor'
-    }
-}]
 
 export const CalendarPage = () => {
 
-
     const {openDateModal} = useUiStore();
+
+    //Cuando se quiera crear un evento o actualizarlo
+    //Se crearan funciones dentro del custom hook para realizar los disparadores de las acciones respectivas
+    const { events, setActiveEvent } = useCalendarStore();
+
 
     //Si no se tiene el valor se dejara en la semana 
     const [lasView, setLasView] = useState(localStorage.getItem('lastView') || 'week');
@@ -52,7 +43,8 @@ export const CalendarPage = () => {
 
     //Respecto a lo seleccionado se abstrae la info de este
     const onSelect = (event) => {
-        console.log({onSelect: event});
+        // console.log({onSelect: event});
+        setActiveEvent(event);
     }
 
     //Cuando la vista cambia almacenarla en LocalStorage
@@ -85,7 +77,10 @@ export const CalendarPage = () => {
             onView = {onViewChanged}
         />
 
-        <CalendarModal></CalendarModal>
+        <CalendarModal/>
+        <FabAddNew/>
+        <FabDelete/>
+
     </>
   )
 }
