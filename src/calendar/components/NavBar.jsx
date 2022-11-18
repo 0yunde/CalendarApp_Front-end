@@ -1,20 +1,17 @@
 export const Navbar = () => {
   return (
     <div className="navbar navbar-dark bg-dark mb-4 px-4">
-        <span className="navbar-brand">
-            &nbsp;
-            <i className="fas fa-calendar-alt"></i>
-            &nbsp;
-            Alejandro
-        </span>
+      <span className="navbar-brand">
+        &nbsp;
+        <i className="fas fa-calendar-alt"></i>
+        &nbsp; Alejandro
+      </span>
 
-        <button className="btn btn-outline-danger">
-            <i className="fas fa-sign-out-alt"></i>
-            &nbsp;
-            <span>
-                Salir
-            </span>
-        </button>
+      <button className="btn btn-outline-danger">
+        <i className="fas fa-sign-out-alt"></i>
+        &nbsp;
+        <span>Salir</span>
+      </button>
     </div>
-  )
-}
+  );
+};
