@@ -56,7 +56,7 @@ export const calendarSlice = createSlice({
       });
     },
     onDeleteEvent: (state) => {
-      //Si no existen notas activas no deberia hacer el delete
+      //Si no existen notas activas no debe hacer el delete
       if (state.activeEvent) {
         //Es decir , voy a regresar todos los eventos cuyo id sea diferente al de la nota activa
         //entonces fisicamente se eliminara del arreglo

@@ -28,6 +28,8 @@ const customStyles = {
 Modal.setAppElement("#root");
 
 export const CalendarModal = () => {
+
+  //Activar modal del evento y traer funcion de guardado de modal 
   const { activeEvent, startSavingEvent } = useCalendarStore();
 
   // Accion del modal para abrirlo al accionar en calendar
@@ -44,6 +46,8 @@ export const CalendarModal = () => {
     end: addHours(new Date(), 2),
   });
 
+
+  //Memoriza los valores 
   const titleClass = useMemo(() => {
     //Si el formulario no se dispara regresa un string vacio en la titulo
     if (!formSubmitted) return "";
