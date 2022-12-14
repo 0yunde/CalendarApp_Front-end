@@ -13,7 +13,7 @@ export const AppRouter = () => {
   const authStatus = "not-authenticated"; //'not-authenticated' ;;
 
   //Probando variables de entorno
-  console.log(envVar());
+  //console.log(envVar());
 
   return (
     <Routes>
