@@ -9,23 +9,24 @@ export const useAuthStore = () => {
     const dispatch = useDispatch()
 
     //Ingresar
-
-    const startLogin = async({email, password}) => {
+    const startLogin = async({ email, password }) => {
+        console.log(email, password);
         dispatch(onChecking())
         try {
-        
-            const { data }  = await calendarApi.post('/auth', {email, password} );
+            const { data }  = await calendarApi.post('/auth',{email, password});
+            console.log(data);
             localStorage.setItem('token' , data.token) ;
             //Representacion de en un entero de la fecha actual para ahorar al llegar
             //a la peticion al back para saber si el token es permitido
             localStorage.setItem('token-init-date' , new Date().getTime()); 
-            dispatch(onLogin( {name: data.name, id: data.id}))
+            dispatch(onLogin( {name: data.name, id: data.id}));
+            console.log(data.name, data.id);
 
 
             
         } catch (error) {
-            dispatch(onLogOut('Credenciales incorrectas'));
-
+            console.log({error});
+            dispatch(onLogOut('Credenciales incorrectas' ));
             setTimeout(() => {
                 dispatch(clearErrorMessage());
             }, 10);
@@ -33,11 +34,9 @@ export const useAuthStore = () => {
     }
 
     //Registrarse
-
     const startRegister = async({name, email, password}) => {
         dispatch(onChecking())
         try {
-        
             const { data }  = await calendarApi.post('/auth/register', {name, email, password} );
             localStorage.setItem('token' , data.token) ;
             //Representacion de en un entero de la fecha actual para ahorar al llegar
@@ -48,13 +47,38 @@ export const useAuthStore = () => {
 
             
         } catch (error) {
-            dispatch(onLogOut(error.response.data?.msg || 'Error por personalizar'));
-
+            console.log(error);
+            dispatch(onLogOut(error.response.data?.msg || Object.values(error.response.data.errors)[0].msg ));
             setTimeout(() => {
                 dispatch(clearErrorMessage());
             }, 10);
         }
     }
+
+    //Funcion qque chekea token que se usara en appRouter para mostrar rutas publicas o privadaas
+    const checkAuthToken = async() => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            return dispatch(onLogOut())            
+        }
+
+        try {
+            const { data } = await calendarApi.get('auth/renew');
+            //si se tiene un nuevo token se establecera en el localStorage
+            localStorage.setItem('token' , data.token) ;
+            localStorage.setItem('token-init-date' , new Date().getTime()); //almacenar nueva fecha de validacion een caso de validacion con la fecha
+            dispatch(onLogin( {name: data.name, id: data.id}));  // se toma la name y el id 
+        } catch (error) {
+            localStorage.clear();//limpiar localStorage ya que el token almacenado no funciona
+            dispatch(onLogOut()); //Cerrar
+        }
+    }
+
+    const startLogOut = () => {
+        localStorage.clear();
+        dispatch(onLogOut());
+    }
+
 
 
     return {
@@ -64,8 +88,10 @@ export const useAuthStore = () => {
         errorMessage, 
 
         //* Metodos acciones que las personas van a poder llamar (otros desarrolladores) para interactuar con el store. 
+        checkAuthToken,
         startLogin,
-        startRegister
+        startLogOut,
+        startRegister,
     }
 }
 
