@@ -14,18 +14,12 @@ export const useAuthStore = () => {
         dispatch(onChecking())
         try {
             const { data }  = await calendarApi.post('/auth',{email, password});
-            console.log(data);
             localStorage.setItem('token' , data.token) ;
             //Representacion de en un entero de la fecha actual para ahorar al llegar
             //a la peticion al back para saber si el token es permitido
             localStorage.setItem('token-init-date' , new Date().getTime()); 
             dispatch(onLogin( {name: data.name, id: data.id}));
-            console.log(data.name, data.id);
-
-
-            
         } catch (error) {
-            console.log({error});
             dispatch(onLogOut('Credenciales incorrectas' ));
             setTimeout(() => {
                 dispatch(clearErrorMessage());
@@ -44,8 +38,6 @@ export const useAuthStore = () => {
             localStorage.setItem('token-init-date' , new Date().getTime()); 
             dispatch(onLogin( {name: data.name, id: data.id}))
 
-
-            
         } catch (error) {
             console.log(error);
             dispatch(onLogOut(error.response.data?.msg || Object.values(error.response.data.errors)[0].msg ));
@@ -58,9 +50,8 @@ export const useAuthStore = () => {
     //Funcion qque chekea token que se usara en appRouter para mostrar rutas publicas o privadaas
     const checkAuthToken = async() => {
         const token = localStorage.getItem('token');
-        if (!token) {
-            return dispatch(onLogOut())            
-        }
+        if (!token) return dispatch(onLogOut() );            
+        
 
         try {
             const { data } = await calendarApi.get('auth/renew');

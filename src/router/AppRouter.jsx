@@ -6,7 +6,6 @@ import { useAuthStore } from "../hooks";
 import  { useEffect } from "react";
 
 
-
 /*
  * Proteccion de rutas.
  * Fail Safe route : en caso de que se requiera solicitar cualquier otra ruta no existente llevar a pantalla de login
@@ -22,7 +21,6 @@ export const AppRouter = () => {
 
   useEffect(() => {
     checkAuthToken();
-
   }, [])
   
   
