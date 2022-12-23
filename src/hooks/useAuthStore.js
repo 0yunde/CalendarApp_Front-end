@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux"
 import { calendarApi } from "../api"
-import { onChecking, onLogin, onLogOut, clearErrorMessage } from "../store"
+import { onChecking, onLogin, onLogOut, clearErrorMessage, onLogOutCalendar } from "../store"
 
 //Tiene como objetico realizarr cualquier interacion ccon la parte del auth en nuestro Store
 export const useAuthStore = () => {
@@ -54,7 +54,7 @@ export const useAuthStore = () => {
         
 
         try {
-            const { data } = await calendarApi.get('auth/renew');
+            const { data } = await calendarApi.post('auth/renew');
             //si se tiene un nuevo token se establecera en el localStorage
             localStorage.setItem('token' , data.token) ;
             localStorage.setItem('token-init-date' , new Date().getTime()); //almacenar nueva fecha de validacion een caso de validacion con la fecha
@@ -67,6 +67,7 @@ export const useAuthStore = () => {
 
     const startLogOut = () => {
         localStorage.clear();
+        dispatch(onLogOutCalendar());
         dispatch(onLogOut());
     }
 

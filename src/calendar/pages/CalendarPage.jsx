@@ -1,5 +1,4 @@
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
 import { Calendar } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "./CalendarPage.css";
@@ -15,14 +14,16 @@ import {
 } from "../";
 
 import { localizer, getMessagesES } from "../../helpers";
-import { useUiStore, useCalendarStore } from "../../hooks";
+import { useUiStore, useCalendarStore, useAuthStore } from "../../hooks";
 
 export const CalendarPage = () => {
+
+  const { user } = useAuthStore();
   const { openDateModal } = useUiStore();
 
   //Cuando se quiera crear un evento o actualizarlo
   //Se crearan funciones dentro del custom hook para realizar los disparadores de las acciones respectivas
-  const { events, setActiveEvent } = useCalendarStore();
+  const { events, setActiveEvent, startLoadingEvents } = useCalendarStore();
 
   //Si no se tiene el valor se dejara en la semana
   const [lasView, setLasView] = useState(
@@ -31,9 +32,11 @@ export const CalendarPage = () => {
 
   const eventStyleGetter = (event, start, end, isSelected) => {
     // console.log({event, start, end, isSelected});
+    console.log(event);
+    const isMyEvent = (user.id === event.user._id) || (user.id === event.user.id) 
 
     const style = {
-      backgroundColor: "#FF5733",
+      backgroundColor: isMyEvent ? "#FF5733": "#465660",
       borderRadius: "0px",
       opacity: 0.8,
       color: "white",
@@ -61,6 +64,11 @@ export const CalendarPage = () => {
     localStorage.setItem("lastView", event);
     setLasView(lasView);
   };
+
+  useEffect(() => {
+    startLoadingEvents()
+  }, [])
+  
 
   return (
     <>
