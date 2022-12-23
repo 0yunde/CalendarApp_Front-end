@@ -34,7 +34,7 @@ import { createSlice } from "@reduxjs/toolkit";
 export const calendarSlice = createSlice({
   name: "calendar",
   initialState: {
-    isLadingEvents: true,
+    isLoadingEvents: true,
     events: [
       //tempEvent
     ],
@@ -69,8 +69,8 @@ export const calendarSlice = createSlice({
         state.activeEvent = null;
       }
     },
-    onLoadEvents: (state,  {payload = []}) => {
-      state.isLadingEvents = false;
+    onLoadEvents: (state,  { payload = [] }) => {
+      state.isLoadingEvents = false;
       //state.events = payload; // prblema , no recibe eventos nuevos lo cual no relogea eventos nuevos 
       
       //barrer los eventos a medida que se vayan generando por su id 
@@ -83,14 +83,14 @@ export const calendarSlice = createSlice({
       })
     },
     onLogOutCalendar: (state) => {
-      state.isLadingEvents = true,
+      state.isLoadingEvents = true,
       state.events = [],
       state.activeEvent = null
     },
   },
 });
 
-// Action creators are generated for each case reducer function
+
 export const { onSetActiveEvent, 
   onAnNewEvent, 
   onUpdateEvent, 

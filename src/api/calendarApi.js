@@ -12,7 +12,7 @@ const calendarApi = axios.create({
 //antes o desppues que se haga, añadir o modificar la respuesta 
 //o añadi o modificar informacion a la peticion 
 
-calendarApi.interceptors.request.use(config => {
+calendarApi.interceptors.request.use( config => {
 
     config.headers = {
         ...config.headers, //para usar todos los token que vengan en la configuracion y mantenerlos

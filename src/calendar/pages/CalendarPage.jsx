@@ -27,12 +27,11 @@ export const CalendarPage = () => {
 
   //Si no se tiene el valor se dejara en la semana
   const [lasView, setLasView] = useState(
-    localStorage.getItem("lastView") || "week"
+    localStorage.getItem('lastView') || 'week'
   );
 
   const eventStyleGetter = (event, start, end, isSelected) => {
     // console.log({event, start, end, isSelected});
-    console.log(event);
     const isMyEvent = (user.id === event.user._id) || (user.id === event.user.id) 
 
     const style = {
@@ -62,7 +61,7 @@ export const CalendarPage = () => {
   //Permite establecerlo a la hora que se recargue el navegador
   const onViewChanged = (event) => {
     localStorage.setItem("lastView", event);
-    setLasView(lasView);
+    setLasView(event);
   };
 
   useEffect(() => {
@@ -80,7 +79,7 @@ export const CalendarPage = () => {
         defaultView={lasView}
         startAccessor="start"
         endAccessor="end"
-        style={{ height: 500 }} //{{ height: 'calc(80vh - 80px)' }}
+        style={{ height: 'calc(80vh - 80px)' }} //{{ height: 'calc(80vh - 80px)' }}
         messages={getMessagesES()}
         eventPropGetter={eventStyleGetter}
         components={{

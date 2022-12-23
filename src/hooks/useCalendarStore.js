@@ -104,8 +104,8 @@ export const useCalendarStore = () => {
     hasEventSelected: !!activeEvent, //si es null este regresara falso , si tiene objeto regresara true
 
     //*Metodos
-    startDeletingEvent,
     setActiveEvent,
+    startDeletingEvent,
     startLoadingEvents,
     startSavingEvent,
   };
